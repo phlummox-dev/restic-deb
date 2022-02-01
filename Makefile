@@ -9,7 +9,14 @@ RESTIC_URL = https://github.com/restic/restic/releases/download/v$(VERSION)/rest
 RESTIC=usr/bin/restic
 RESTIC_MAN=usr/share/man/man1/restic.1
 RESTIC_BASH_COMPLETION=usr/share/bash-completion/completions/restic
-DEB_CONTROL=restic-0.12.1/debian/control
+DEB_CONTROL=restic-$(VERSION)/debian/control
+RESTIC_DEB=restic_$(VERSION)-2_all.deb
+
+print-version:
+	@echo $(VERSION)
+
+print-deb-file:
+	@echo $(RESTIC_DEB)
 
 $(RESTIC):
 	mkdir -p `dirname $@`
@@ -33,14 +40,14 @@ restic-$(VERSION): restic-$(VERSION).tgz
 		--description "restic backup program" \
 		$<
 
-restic_0.12.1-2_all.deb: restic-$(VERSION)
+$(RESTIC_DEB): restic-$(VERSION)
 	sed -i 's|^Maintainer:.*|Maintainer: https://github.com/phlummox-dev/restic-deb/|' $(DEB_CONTROL)
 	sed -i 's/^Architecture:.*/Architecture: amd64/' $(DEB_CONTROL)
 	sed -i 's/^Section:.*/Section: utils/' $(DEB_CONTROL)
 	echo "Homepage: https://github.com/restic/restic" >> $(DEB_CONTROL)
 	cd $< && fakeroot ./debian/rules binary
 
-build-deb: restic_$(VERSION)-2_all.deb
+build-deb: $(RESTIC_DEB)
 
 clean:
 	-rm -rf restic* usr
