@@ -7,6 +7,14 @@ using the [alien][alien] package converter).
 The .deb file contains the static binary, man pages,
 and bash-completion function.
 
+# installation
+
+A copy of the built .deb file can be downloaded from
+the [Releases][releases] page. Install it with e.g.
+`sudo apt install $PWD/restic_0.12.1-2_amd64.deb`.
+
+[releases]: https://github.com/phlummox-dev/restic-deb/releases/
+
 ## rationale
 
 As at the time of writing (Jan 2022), the version of restic contained in
