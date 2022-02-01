@@ -62,7 +62,8 @@ jobs:
             --tag ${{github.ref_name}} \
             --name "Version $version" \
             --description "See https://github.com/restic/restic for details" \
-            --draft
+
+        sleep 5
 
         deb_file=$(make print-deb-file)
 
