@@ -10,7 +10,7 @@ RESTIC=usr/bin/restic
 RESTIC_MAN=usr/share/man/man1/restic.1
 RESTIC_BASH_COMPLETION=usr/share/bash-completion/completions/restic
 DEB_CONTROL=restic-$(VERSION)/debian/control
-RESTIC_DEB=restic_$(VERSION)-2_all.deb
+RESTIC_DEB=restic_$(VERSION)-2_amd64.deb
 
 print-version:
 	@echo $(VERSION)
