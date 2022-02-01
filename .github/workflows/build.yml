@@ -24,3 +24,55 @@ jobs:
     - uses: actions/checkout@v2
       name: Check out code
 
+    - name: Install dependencies
+      run: |
+        sudo apt-get install -y alien fakeroot
+
+    - name: Build .deb file
+      run: |
+        make build-deb
+
+    # name of debfile is hard-coded
+    # TODO: can be gotten from `make print-deb-file`
+    - name: Store .deb as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: restic-deb
+        path: restic_0.12.1-2_amd64.deb
+
+    - name: create release
+      if: startsWith(github.ref, 'refs/tags/v')
+      run: |
+        set -x
+
+        # version, as gotten from git tag
+        ref_name='${{github.ref_name}}'
+        version="${ref_name:1}" # strip leading 'v'
+
+        # download github-release tool
+        curl -L 'https://github.com/github-release/github-release/releases/download/v0.10.0/linux-amd64-github-release.bz2' | bunzip2 > github-release
+        chmod a+rx ./github-release
+
+        export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+        IFS='/' read repo_user repo_name  <<<$(echo "${{github.repository}}")
+
+        ./github-release release \
+            --user $repo_user \
+            --repo $repo_name \
+            --tag ${{github.ref_name}} \
+            --name "Version $version" \
+            --description "See https://github.com/restic/restic for details" \
+            --draft
+
+        deb_file=$(make print-deb-file)
+
+        ./github-release upload \
+            --user $repo_user \
+            --repo $repo_name \
+            --tag ${{github.ref_name}} \
+            --label "$deb_file" \
+            --name "$deb_file" \
+            --replace \
+            --file "$deb_file"
+
+
