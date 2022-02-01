@@ -1,0 +1,26 @@
+
+name: build
+
+on:
+  pull_request:
+    paths-ignore:
+      - '**.md'
+      - '**.pmd'
+      - appveyor.yml
+      - .gitignore
+  push:
+    paths-ignore:
+      - '**.md'
+      - '**.pmd'
+      - appveyor.yml
+      - .gitignore
+
+jobs:
+  deb_build:
+    name: deb build
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v2
+      name: Check out code
+
