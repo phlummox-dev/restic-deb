@@ -37,7 +37,7 @@ jobs:
     - name: Store .deb as artifact
       uses: actions/upload-artifact@v2
       with:
-        name: hup-binary
+        name: restic-deb
         path: restic_0.12.1-2_amd64.deb
 
     - name: create release
