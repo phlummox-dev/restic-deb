@@ -3,7 +3,7 @@
 
 .DELETE_ON_ERROR:
 
-VERSION=0.12.1
+VERSION=0.15.2
 RESTIC_URL = https://github.com/restic/restic/releases/download/v$(VERSION)/restic_$(VERSION)_linux_amd64.bz2
 
 RESTIC=usr/bin/restic
